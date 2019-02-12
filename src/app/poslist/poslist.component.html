@@ -1,0 +1,25 @@
+<h1>7 principes pour être heureux au travail</h1>
+<h4>Tiré du livre "Comment devenir un optimiste contagieux." par Shawn Achor </h4>
+<div class="container">
+  <div class="list-group row">
+
+    <li *ngFor="let post of posts; let i=index;"
+    class="list-group-item"
+    [ngClass]="{'list-group-item-success':post.loveIts > 0,
+                'list-group-item-danger':post.loveIts < 0}">
+
+            <p style="float: right;">{{post.created_at | date :'dd/MM/yyyy, hh:mm aaa' }}</p>
+            <h3>{{post.title}}</h3>
+
+            <p>{{post.content}}</p>
+
+            <button type="button" class="btn btn-success" style="margin-right: 10px" (click)="onLike(i)">Like</button>
+            <button type="button" class="btn btn-danger" (click)="onDislike(i)">Dislike</button>
+
+    </li>
+
+
+  </div>
+</div>
+
+<h4><a href="https://www.biendansmontravail.fr/7-principes-heureux-au-travail/" >Source</a></h4>
