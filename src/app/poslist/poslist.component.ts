@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { Post } from '../post';
 
-import { POSTS } from '../mock-post';
+import { BlogService } from '../blog.service';
+
+import { Subscription } from 'rxjs/Subscription';
 
 
 @Component({
@@ -10,23 +12,41 @@ import { POSTS } from '../mock-post';
   templateUrl: './poslist.component.html',
   styleUrls: ['./poslist.component.scss']
 })
-export class PoslistComponent implements OnInit {
+export class PoslistComponent  implements OnInit, OnDestroy {
 
-  posts:Post[];
+  posts: any[];
+  postSubscription: Subscription;
 
-  constructor() { }
+
+  constructor(private blogService: BlogService) {
+    console.log("constructeur postSubscription : "+this.postSubscription);
+  }
 
   ngOnInit() {
-    this.posts = POSTS;
-    console.log(this.posts);
+    this.postSubscription = this.blogService.postsSubject.subscribe(
+      (posts: any[]) => {
+        this.posts = posts;
+      }
+    );
+    this.blogService.emitpostsSubject();
+
   }
 
-  onLike(index:number){
-    this.posts[index].loveIts ++;
+
+  onReset() {
+    this.blogService.reset();
   }
 
-  onDislike(index:number){
-    this.posts[index].loveIts --;
+
+
+
+  ngOnDestroy(){
+    this.postSubscription.unsubscribe();
   }
+
+
+
+
+
 
 }
